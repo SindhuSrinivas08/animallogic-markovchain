@@ -8,18 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.nio.channels.OverlappingFileLockException;
 
 @ControllerAdvice
-public class GlobalExceptionHandler{
+public class GlobalExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleExceptions(Exception ex) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
         logger.error("", ex);
         return new ResponseEntity<Object>(
                 ex.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -28,10 +25,10 @@ public class GlobalExceptionHandler{
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity handleRunTimeExceptions(RuntimeException ex) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
         logger.error("", ex);
         if (ex instanceof MultipartException) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Access-Control-Allow-Origin", "*");
             return new ResponseEntity<Object>(
                     "File size cannot exceed 20MB", headers, HttpStatus.REQUEST_HEADER_FIELDS_TOO_LARGE);
         } else if (ex instanceof OverlappingFileLockException) {
