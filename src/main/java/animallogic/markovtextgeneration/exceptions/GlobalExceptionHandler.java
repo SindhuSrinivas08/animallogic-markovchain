@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.nio.channels.OverlappingFileLockException;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler{
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(Exception.class)
